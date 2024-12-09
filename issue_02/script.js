@@ -73,7 +73,7 @@
           const audioURL = window.URL.createObjectURL(blob);
           audio.src = audioURL;
 
-          // メモリリークを防ぐために解放する
+          // メモリリークを防ぐために解放する -> コンピューターを動作させているうちに、使用可能なメモリの容量が減っていってしまう現象
           deleteButton.onclick = (e) => {
             let evtTgt = e.target;
             // 一応、ページをリロードすると自動的に無効になるって
