@@ -24,6 +24,12 @@
           console.log('recorder started');
           record.style.background = 'red';
           record.style.color = 'black';
+
+          // ここで秒数制限。データベースに追加する前も10秒前かも取得しておきたいよね。
+          setInterval(() => {
+            console.log('3秒たった、止めます。');
+            mediaRecorder.stop();
+          }, 10000);
         };
 
         let chunks = [];
@@ -60,13 +66,18 @@
           clipContainer.appendChild(deleteButton);
           soundClips.appendChild(clipContainer);
 
+          // ここで完成系にしている。極論これが最低限必要。
+          // ブロブはバイナリデータを表すオブジェクト
           const blob = new Blob(chunks, { type: 'audio/webm; codecs=opus' });
           chunks = [];
           const audioURL = window.URL.createObjectURL(blob);
           audio.src = audioURL;
 
+          // メモリリークを防ぐために解放する
           deleteButton.onclick = (e) => {
             let evtTgt = e.target;
+            // 一応、ページをリロードすると自動的に無効になるって
+            URL.revokeObjectURL(audioURL);
             evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode);
           };
         };
