@@ -1,0 +1,17 @@
+* {
+  margin: 0;
+}
+
+body {
+  max-width: calc(100% - 32px);
+  margin: 16px auto;
+}
+
+.sound-clips {
+  margin-top: 32px;
+  font-size: 14px;
+
+  div + div {
+    margin-top: 16px;
+  }
+}
