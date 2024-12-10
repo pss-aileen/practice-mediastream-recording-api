@@ -24,4 +24,8 @@
     },
     false
   );
+
+  audioElement.addEventListener("ended", () => {
+    playButton.dataset.playing = "false";
+  }, false);
 }
