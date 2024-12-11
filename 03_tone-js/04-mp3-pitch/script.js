@@ -86,4 +86,27 @@
   };
 
   playerWithPitchShift();
+
+  /* 
+    📍 AudioElement + PitchShift
+  */
+
+  const audioElementWithPitchShift = () => {
+    const audioContext = new AudioContext();
+    const audioElement = document.querySelector('audio');
+
+    const track = audioContext.createMediaElementSource(audioElement);
+    const pitchShift = new Tone.PitchShift({ pitch: 2 });
+
+    track.connect(pitchShift).connect(audioContext.destination);
+
+    // const player = new Tone.Player(track).connect(pitchShift);
+    const btn = document.getElementById('audioElement-pitchShift');
+
+    btn.addEventListener('click', () => {
+      audioContext.start();
+    });
+  };
+
+  audioElementWithPitchShift();
 }

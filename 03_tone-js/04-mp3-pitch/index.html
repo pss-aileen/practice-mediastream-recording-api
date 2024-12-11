@@ -9,8 +9,6 @@
 </head>
 
 <body>
-  <!-- HTMLでのオーディオの読み込み -->
-  <audio src="./audio.mp3" controls></audio>
 
   <ul>
     <li><button id="tone-permission">Tone Permission</button></li>
@@ -18,6 +16,10 @@
     <li><button id="class-player">Class Player</button></li>
     <li><button id="player-reverb">Player with Reverb</button></li>
     <li><button id="player-pitchShift">Player with PitchShift</button></li>
+    <li>
+      <audio src="./audio.mp3" controls></audio>
+      <button id="audioElement-pitchShift">AudioElement with PitchShift</button>
+    </li>
   </ul>
 
   <!-- Tone.jsの読み込み -> コンソールにバージョンなどが表示される -->
