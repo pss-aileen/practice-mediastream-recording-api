@@ -28,26 +28,45 @@
   const permissionCloseBtn = document.getElementById('permission-close');
 
   const mic = new Tone.UserMedia();
+
+  // マイク初回接続許可、通常接続許可
   permissionBtn.addEventListener('click', () => {
     mic
       .open()
       .then(() => {
         console.log('mic open');
+        init();
+        // あとで、きちんと許可されているかされていないかで制御ができたらいいなぁ...
       })
       .catch((e) => console.error('error', e));
   });
 
+  // マイク接続切断
   permissionCloseBtn.addEventListener('click', () => {
     mic.close();
     console.log('mic close');
   });
 
-  // mic
-  //   .open()
-  //   .then(() => {
-  //     console.log('mic open');
-  //   })
-  //   .catch((e) => {
-  //     console.error('mic not open:', e);
-  //   });
+  // [❔] 物理的にもう一度許可をもらいなおす方法や、あらためて拒否する方法があるのか知りたい。
+
+  function init() {
+    const recorder = new Tone.Recorder();
+    mic.connect(recorder);
+    // mic.toDestination();
+
+    recBtn.addEventListener('click', () => {
+      console.log('rec start');
+      recorder.start();
+    });
+
+    stopBtn.addEventListener('click', async () => {
+      console.log('rec stop');
+      const recording = await recorder.stop();
+      const url = window.URL.createObjectURL(recording);
+      const anchor = document.createElement('a');
+      anchor.download = 'recording.webm';
+      anchor.href = url;
+      anchor.click();
+    });
+  }
 }
