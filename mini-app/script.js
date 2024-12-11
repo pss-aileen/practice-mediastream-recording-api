@@ -29,12 +29,16 @@
 
   const mic = new Tone.UserMedia();
 
+  let micPermission = false;
+
   // マイク初回接続許可、通常接続許可
   permissionBtn.addEventListener('click', () => {
     mic
       .open()
       .then(() => {
         console.log('mic open');
+        micPermission = true;
+        renderPermissionFlag();
         init();
         // あとで、きちんと許可されているかされていないかで制御ができたらいいなぁ...
       })
@@ -44,6 +48,8 @@
   // マイク接続切断
   permissionCloseBtn.addEventListener('click', () => {
     mic.close();
+    micPermission = false;
+    renderPermissionFlag();
     console.log('mic close');
   });
 
@@ -68,5 +74,10 @@
       anchor.href = url;
       anchor.click();
     });
+  }
+
+  function renderPermissionFlag() {
+    const element = document.getElementById('permissionFlag');
+    element.textContent = micPermission;
   }
 }
