@@ -147,7 +147,7 @@
 
   /* 
     📍 User Media + Recorder + PitchShift
-    💡 どうなるか！？
+    💡 できた〜〜〜〜〜〜〜〜〜〜〜〜！！！！でもconnnectとchainの違いがわからない
   */
 
   const userMediaWithRecorderPitchShift = () => {
@@ -155,15 +155,17 @@
     const stopBtn = document.getElementById('user-media-recorder-pitchShift-stop');
 
     const recorder = new Tone.Recorder();
-    const reverb = new Tone.Reverb();
+    // const reverb = new Tone.Reverb();
     const pitchShift = new Tone.PitchShift({ pitch: 10 });
     const mic = new Tone.UserMedia();
 
-    // mic.connect(reverb).connect(recorder);
-    mic.chain(reverb);
+    // マイクをpitchShiftに渡す
     // mic.chain(pitchShift);
-    reverb.toDestination();
-    reverb.connect(recorder);
+    mic.connect(pitchShift);
+
+    // マイクの音がはいったpitchShiftをオーディオとレコーダーに渡す
+    pitchShift.toDestination();
+    pitchShift.connect(recorder);
 
     mic
       .open()
