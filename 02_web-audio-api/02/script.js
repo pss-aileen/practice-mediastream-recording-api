@@ -52,7 +52,7 @@
   // track.connect(audioContext.destination);
 
   // 2. gainNode 追加後: audio(source) -> modification -> destination
-  track.connext(gainNode).connect(audioContext.destination);
+  track.connect(gainNode).connect(audioContext.destination);
 
   /*
     [📍PROCESS] 再生、停止ボタン、イベントを設定する
@@ -89,7 +89,8 @@
     }
 
     /* 
-      [MEMO] オーディオの再生は、audioElementを行っていて、Web Audio API が行っているわけではない！
+      [💡AWARENESS] オーディオの再生は、audioElementを行っていて、Web Audio API が行っているわけではない！
+      - ただの audioElement が担う
     */
   });
 
@@ -117,5 +118,25 @@
     - gainNodeを、コード冒頭あたりのtrackの前で宣言。
     - track に connext で接続
   */
-  
+
+  /*
+    [📍PROCESS] ボリュームコントロールのイベントを設定
+  */
+
+  const volumeControl = document.querySelector('#volume');
+
+  volumeControl.addEventListener(
+    'input',
+    () => {
+      gainNode.gain.value = volumeControl.value;
+      /* 
+        [MEMO] node の値、つまり gainNode.gain は一つの値ではない
+        - AudioParam という型のオブジェクト
+        - だから、gainNode.gain.value のプロパティに設定している
+        - gain 直接設定するのより↑の方法が◎
+        - こうすることでより柔軟にあれこれできるって
+      */
+    },
+    false
+  );
 }
