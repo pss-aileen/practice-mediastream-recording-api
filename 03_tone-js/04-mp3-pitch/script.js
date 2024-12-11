@@ -155,9 +155,14 @@
     const stopBtn = document.getElementById('user-media-recorder-pitchShift-stop');
 
     const recorder = new Tone.Recorder();
-    const pitchShift = new Tone.PitchShift({ pitch: 2 });
+    const reverb = new Tone.Reverb();
+    const pitchShift = new Tone.PitchShift({ pitch: 10 });
     const mic = new Tone.UserMedia();
-    mic.connect(recorder);
+
+    // mic.connect(reverb).connect(recorder);
+    mic.chain(reverb);
+    // mic.chain(pitchShift);
+    reverb.toDestination();
 
     mic
       .open()
