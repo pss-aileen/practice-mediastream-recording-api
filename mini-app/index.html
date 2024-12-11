@@ -12,14 +12,16 @@
 
   <h1>Recorder</h1>
 
+  <button id="permission">permission</button>
+
   <section>
     <label>
       Pitch:
       <input type="range" min="-10" max="10" value="1" step="1">
     </label>
 
-    <button>REC</button>
-    <button>STOP</button>
+    <button id="rec">REC</button>
+    <button id="stop">STOP</button>
   </section>
 
 
@@ -31,6 +33,8 @@
 
   </section>
 
+  <!-- Tone.js CDN -->
+  <script src="http://unpkg.com/tone"></script>
   <script src="script.js"></script>
 </body>
 
