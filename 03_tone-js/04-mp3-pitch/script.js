@@ -88,7 +88,65 @@
   playerWithPitchShift();
 
   /* 
+    📍 User Media
+    - ボタンによって、録音体制がととのうようになった
+  */
+
+  const userMedia = () => {
+    const btn = document.getElementById('user-media');
+
+    btn.addEventListener('click', () => {
+      const mic = new Tone.UserMedia().toDestination();
+
+      mic
+        .open()
+        .then(() => {
+          console.log('mic.open');
+        })
+        .catch((e) => console.log('mic not open'));
+    });
+  };
+
+  userMedia();
+
+  /* 
+    📍 User Media + Recorder
+  */
+
+  const userMediaWithRecorder = () => {
+    const startBtn = document.getElementById('user-media-recorder-start');
+    const stopBtn = document.getElementById('user-media-recorder-stop');
+
+    const recorder = new Tone.Recorder();
+    const mic = new Tone.UserMedia().connect(recorder);
+
+    mic
+      .open()
+      .then(() => {
+        console.log('mic.open');
+        startBtn.addEventListener('click', () => {
+          console.log('recorder start');
+          recorder.start();
+        });
+      })
+      .catch((e) => console.log('mic not open'));
+
+    stopBtn.addEventListener('click', async () => {
+      console.log('recorder stop');
+      const recording = await recorder.stop();
+      const url = window.URL.createObjectURL(recording);
+      const anchor = document.createElement('a');
+      anchor.download = 'recording.webm';
+      anchor.href = url;
+      anchor.click();
+    });
+  };
+
+  userMediaWithRecorder();
+
+  /* 
     📍 AudioElement + PitchShift
+    [RESULT] わからなかった。不要なのかな。Tone.js的に。意味ない。AudioContextはたぶんすでに宣言されてるから。
   */
 
   const audioElementWithPitchShift = () => {
@@ -108,5 +166,13 @@
     });
   };
 
-  audioElementWithPitchShift();
+  // audioElementWithPitchShift();
+
+  /* 
+    📍 AudioElement + PitchShift 2
+    - https://tonejs.github.io/docs/15.0.4/classes/UserMedia.html
+    - Sourceがオシレーターとか、色々あって、そのなかの UserMediaが...
+    - と思ったけど、たぶん違う。SourceのUserMediaはHTMLのaudioではない
+    - とりあえずこれも一旦skip
+  */
 }
