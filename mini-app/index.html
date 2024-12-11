@@ -10,9 +10,10 @@
 
 <body>
 
-  <h1>Recorder</h1>
+  <h1>Recorder with PitchShift</h1>
 
-  <p>permission: <span id="permissionFlag">-</span></p>
+  <p>permission: <span id="permission-flag">-</span></p>
+  <p>recording: <span id="recording-flag">-</span></p>
 
   <button id="permission">permission</button>
   <button id="permission-close">permission-close</button>
@@ -23,15 +24,15 @@
       <input type="range" min="-10" max="10" value="1" step="1" id="pitch">
     </label>
 
-    <button id="rec">REC</button>
-    <button id="stop">STOP</button>
+    <button id="rec" disabled>REC</button>
+    <button id="stop" disabled>STOP</button>
   </section>
 
 
 
 
 
-  <section id="sounds">
+  <section id="sound">
     <!-- 基本的に視聴してからダウンロードする方式で -->
 
   </section>

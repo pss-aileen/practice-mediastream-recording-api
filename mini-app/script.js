@@ -2,14 +2,14 @@
 {
   /* 
     [PROCESS]
-    - フィードバック防止のために一旦音声は外に出さない
-    - マイクの許可を最初にもらう
-    - ピッチを動かしたらピッチの値が変わるようにしておく（設定ボタンとかいらない）
-    - 録音ボタンを押したら録音がはじまる
-    - STOPしたら止まる
+    - フィードバック防止のために一旦音声は外に出さない: done
+    - マイクの許可を最初にもらう: done
+    - ピッチを動かしたらピッチの値が変わるようにしておく（設定ボタンとかいらない）: done
+    - 録音ボタンを押したら録音がはじまる: done
+    - STOPしたら止まる: done
       - 将来的には20秒ぐらいで止めます
-    - 終わったら、エレメントとしてsoundsに展開
-    - 音楽をそこで確認、削除、ダウンロードできるようにする
+    - 終わったら、エレメントとしてsoundsに展開: done
+    - 音楽をそこで確認、削除、ダウンロードできるようにする: done
     - UIをととのえる
     - DONE!
 
@@ -24,6 +24,7 @@
   const recBtn = document.getElementById('rec');
   const stopBtn = document.getElementById('stop');
   const pitch = document.getElementById('pitch');
+  const soundContainer = document.getElementById('sound');
 
   const permissionBtn = document.getElementById('permission');
   const permissionCloseBtn = document.getElementById('permission-close');
@@ -31,6 +32,7 @@
   const mic = new Tone.UserMedia();
 
   let micPermission = false;
+  let isRecording = false;
 
   // マイク初回接続許可、通常接続許可
   permissionBtn.addEventListener('click', () => {
@@ -38,7 +40,6 @@
       .open()
       .then(() => {
         console.log('mic open');
-        micPermission = true;
         renderPermissionFlag();
         init();
         // あとで、きちんと許可されているかされていないかで制御ができたらいいなぁ...
@@ -49,7 +50,6 @@
   // マイク接続切断
   permissionCloseBtn.addEventListener('click', () => {
     mic.close();
-    micPermission = false;
     renderPermissionFlag();
     console.log('mic close');
   });
@@ -65,33 +65,77 @@
 
     // 音源をPitchShiftへパス
     mic.connect(pitchShift);
+
     // 音源 + PitchShift を recorder にパス
     pitchShift.connect(recorder);
 
-    pitchShift.toDestination();
+    // 🧪 確認用: 音源 + PitchShift を スピーカー にパス
+    // pitchShift.toDestination();
+
+    recBtn.disabled = false;
 
     recBtn.addEventListener('click', () => {
       console.log('rec start');
+      renderRecordingFlag();
+
+      // レコーディングスタート
       recorder.start();
+      recBtn.disabled = true;
+      stopBtn.disabled = false;
     });
 
     stopBtn.addEventListener('click', async () => {
       console.log('rec stop');
+      renderRecordingFlag();
+      recBtn.disabled = false;
+
+      // レコーディング終了、音声のblobが返却される
       const recording = await recorder.stop();
+
+      // Blobから音声のURLを作成する
       const url = window.URL.createObjectURL(recording);
-      const anchor = document.createElement('a');
-      anchor.download = 'recording.webm';
-      anchor.href = url;
-      anchor.click();
+
+      // 要素の容器を作成
+      const containerElement = document.createElement('div');
+
+      // 現在時刻取得
+      const date = new Date();
+      const dateElement = document.createElement('p');
+      dateElement.textContent = date;
+
+      // 音声プレビュー要素作成
+      const audioElement = document.createElement('audio');
+      audioElement.setAttribute('controls', '');
+      audioElement.src = url;
+
+      // ダウンロードリンク作成
+      const anchorElement = document.createElement('a');
+      anchorElement.download = 'recording.webm';
+      anchorElement.href = url;
+      anchorElement.textContent = 'DOWNLOAD';
+
+      // 作った要素を描画
+      containerElement.appendChild(dateElement);
+      containerElement.appendChild(audioElement);
+      containerElement.appendChild(anchorElement);
+      soundContainer.appendChild(containerElement);
     });
 
+    // ピッチの値の変更
     pitch.addEventListener('input', () => {
       pitchShift.pitch = pitch.value;
     });
   }
 
   function renderPermissionFlag() {
-    const element = document.getElementById('permissionFlag');
+    micPermission = !micPermission;
+    const element = document.getElementById('permission-flag');
     element.textContent = micPermission;
+  }
+
+  function renderRecordingFlag() {
+    isRecording = !isRecording;
+    const element = document.getElementById('recording-flag');
+    element.textContent = isRecording;
   }
 }
