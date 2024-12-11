@@ -163,6 +163,7 @@
     mic.chain(reverb);
     // mic.chain(pitchShift);
     reverb.toDestination();
+    reverb.connect(recorder);
 
     mic
       .open()
