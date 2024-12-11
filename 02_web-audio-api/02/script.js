@@ -21,6 +21,11 @@
   //  gainNodeの 作成
   const gainNode = audioContext.createGain();
 
+  // StereoPannerNode を作成
+  // pannerは全てのブラウザーでサポートされていない
+  const pannerOptions = { pan: 0 };
+  const panner = new StereoPannerNode(audioContext, pannerOptions);
+
   /* 
     [METHOD OVERVIEW] MediaElementAudioSourceNode オブジェクトを作成する
     [SYNTAX] createMediaElementSource(myMediaElement)
@@ -52,7 +57,12 @@
   // track.connect(audioContext.destination);
 
   // 2. gainNode 追加後: audio(source) -> modification -> destination
-  track.connect(gainNode).connect(audioContext.destination);
+  // track.connect(gainNode).connect(audioContext.destination);
+
+  // 3. StereoPannerNode を追加: audio -> modi -> modi -> destination
+  // [❔QUESTION] 順番で効果が変わるのかなぁ〜まぁ複雑になると変わるよねたぶん
+  // [💡AWARENESS] あ、つまり、trackを入力音声として、それをどんどんconnectで繋いで、最終的に audioContext.destioationに繋げば、音が加工して、出力できる！？
+  track.connect(gainNode).connect(panner).connect(audioContext.destination);
 
   /*
     [📍PROCESS] 再生、停止ボタン、イベントを設定する
@@ -136,6 +146,30 @@
         - gain 直接設定するのより↑の方法が◎
         - こうすることでより柔軟にあれこれできるって
       */
+    },
+    false
+  );
+
+  /*
+    [📍PROCESS] STEREO PANNING を追加
+    - また track 付近に初期設定を追加
+    - track に connect
+    - StereoPannerNode node というやつを変える
+    - これは3D空間とかの調整もできる。音いろいろ操れてたのしか〜のやつ
+    - いつかやってみたいな
+    - もしかして、音作って、それをいろんなところからならすのもできるかな？また後ほど実験
+  */
+
+  /*
+    [📍PROCESS] STEREO PANNING のイベントを設定
+  */
+
+  const pannerControl = document.querySelector('#panner');
+
+  pannerControl.addEventListener(
+    'input',
+    () => {
+      panner.pan.value = pannerControl.value;
     },
     false
   );
