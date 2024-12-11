@@ -1,13 +1,28 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-  
+  <!-- HTMLでのオーディオの読み込み -->
+  <audio src="./audio.mp3" controls></audio>
+
+  <ul>
+    <li><button id="tone-permission">Tone Permission</button></li>
+    <li><button id="tone-test">Tone.js Play Test</button></li>
+    <li><button id="class-player">Class Player</button></li>
+    <li><button id="player-reverb">Player with Reverb</button></li>
+    <li><button id="player-pitchShift">Player with PitchShift</button></li>
+  </ul>
+
+  <!-- Tone.jsの読み込み -> コンソールにバージョンなどが表示される -->
+  <script src="http://unpkg.com/tone"></script>
   <script src="script.js"></script>
 </body>
+
 </html>
