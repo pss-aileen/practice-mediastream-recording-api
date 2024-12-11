@@ -111,6 +111,7 @@
 
   /* 
     📍 User Media + Recorder
+    💡 録音できた！！
   */
 
   const userMediaWithRecorder = () => {
@@ -143,6 +144,44 @@
   };
 
   userMediaWithRecorder();
+
+  /* 
+    📍 User Media + Recorder + PitchShift
+    💡 どうなるか！？
+  */
+
+  const userMediaWithRecorderPitchShift = () => {
+    const startBtn = document.getElementById('user-media-recorder-pitchShift-start');
+    const stopBtn = document.getElementById('user-media-recorder-pitchShift-stop');
+
+    const recorder = new Tone.Recorder();
+    const pitchShift = new Tone.PitchShift({ pitch: 2 });
+    const mic = new Tone.UserMedia();
+    mic.connect(recorder);
+
+    mic
+      .open()
+      .then(() => {
+        console.log('mic.open');
+        startBtn.addEventListener('click', () => {
+          console.log('recorder start');
+          recorder.start();
+        });
+      })
+      .catch((e) => console.log('mic not open'));
+
+    stopBtn.addEventListener('click', async () => {
+      console.log('recorder stop');
+      const recording = await recorder.stop();
+      const url = window.URL.createObjectURL(recording);
+      const anchor = document.createElement('a');
+      anchor.download = 'recording.webm';
+      anchor.href = url;
+      anchor.click();
+    });
+  };
+
+  userMediaWithRecorderPitchShift();
 
   /* 
     📍 AudioElement + PitchShift
