@@ -156,7 +156,7 @@
 
     const recorder = new Tone.Recorder();
     // const reverb = new Tone.Reverb();
-    const pitchShift = new Tone.PitchShift({ pitch: 10 });
+    const pitchShift = new Tone.PitchShift({ pitch: 5 });
     const mic = new Tone.UserMedia();
 
     // マイクをpitchShiftに渡す
