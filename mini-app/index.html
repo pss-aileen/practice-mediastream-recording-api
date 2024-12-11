@@ -10,32 +10,63 @@
 
 <body>
 
-  <h1>Recorder with PitchShift</h1>
+  <section class="wrapper">
 
-  <p>permission: <span id="permission-flag">-</span></p>
-  <p>recording: <span id="recording-flag">-</span></p>
+    <h1>Recorder with PitchShift</h1>
 
-  <button id="permission">permission</button>
-  <button id="permission-close">permission-close</button>
+    <section>
+      <h2>Status</h2>
 
-  <section>
-    <label>
-      Pitch:
-      <input type="range" min="-10" max="10" value="1" step="1" id="pitch">
-    </label>
+      <p>permission: <span id="permission-flag">-</span></p>
+      <p>recording: <span id="recording-flag">-</span></p>
+    </section>
 
-    <button id="rec" disabled>REC</button>
-    <button id="stop" disabled>STOP</button>
+
+    <section>
+      <h2>Mic Permission</h2>
+
+      <button id="permission">permission</button>
+      <button id="permission-close">permission-close</button>
+    </section>
+
+    <section>
+      <h2>Rec</h2>
+      <label>
+        Pitch:
+        <input type="range" min="-10" max="10" value="1" step="1" id="pitch">
+      </label>
+
+      <button id="rec" disabled>REC</button>
+      <button id="stop" disabled>STOP</button>
+    </section>
+
+    <section id="sound">
+      <h2>Outputs</h2>
+      <!-- 基本的に視聴してからダウンロードする方式で -->
+
+      <section id="sound-container">
+
+      </section>
+
+      <!-- <div>
+        <p>Wed Dec 11 2024 20:01:25 GMT+0900 (日本標準時)</p>
+        <div>
+          <audio controls="" src="#">
+          </audio>
+          <a download="recording.webm" href="#">
+            DOWNLOAD
+          </a>
+        </div>
+      </div> -->
+    </section>
   </section>
 
 
 
 
 
-  <section id="sound">
-    <!-- 基本的に視聴してからダウンロードする方式で -->
 
-  </section>
+
 
   <!-- Tone.js CDN -->
   <script src="http://unpkg.com/tone"></script>

@@ -18,13 +18,14 @@
     - 「録音中」の雰囲気、テキストを表示する
     - 可能だったらファイルのサイズなんかも表示したい...が...
     - あと長さも！
+    - ビジュアライザーを出して、録音できているか確認できるようにしたい
     - インプットの種類を将来的に選ぼう
   */
 
   const recBtn = document.getElementById('rec');
   const stopBtn = document.getElementById('stop');
   const pitch = document.getElementById('pitch');
-  const soundContainer = document.getElementById('sound');
+  const soundContainer = document.getElementById('sound-container');
 
   const permissionBtn = document.getElementById('permission');
   const permissionCloseBtn = document.getElementById('permission-close');
@@ -99,9 +100,12 @@
       const containerElement = document.createElement('div');
 
       // 現在時刻取得
-      const date = new Date();
+      const date = new Date().getTime();
       const dateElement = document.createElement('p');
       dateElement.textContent = date;
+
+      // audio と anchor を囲む要素作成
+      const audioAnchorContainer = document.createElement('div');
 
       // 音声プレビュー要素作成
       const audioElement = document.createElement('audio');
@@ -116,9 +120,10 @@
 
       // 作った要素を描画
       containerElement.appendChild(dateElement);
-      containerElement.appendChild(audioElement);
-      containerElement.appendChild(anchorElement);
-      soundContainer.appendChild(containerElement);
+      audioAnchorContainer.appendChild(audioElement);
+      audioAnchorContainer.appendChild(anchorElement);
+      containerElement.appendChild(audioAnchorContainer);
+      soundContainer.prepend(containerElement);
     });
 
     // ピッチの値の変更
