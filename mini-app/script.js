@@ -25,6 +25,7 @@
   const stopBtn = document.getElementById('stop');
 
   const permissionBtn = document.getElementById('permission');
+  const permissionCloseBtn = document.getElementById('permission-close');
 
   const mic = new Tone.UserMedia();
   permissionBtn.addEventListener('click', () => {
@@ -36,9 +37,9 @@
       .catch((e) => console.error('error', e));
   });
 
-  Tone.UserMedia.enumerateDevices().then((devices) => {
-    // print the device labels
-    console.log(devices.map((device) => device.label));
+  permissionCloseBtn.addEventListener('click', () => {
+    mic.close();
+    console.log('mic close');
   });
 
   // mic
