@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Using the Web Audio API 20241211</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!--  オーディオは controls をつけてはじめて、再生ツールが表示される -->
+  <audio src="./audio.mp3" controls></audio>
+
+  <section>
+    <!-- オーディオの再生がブロックされないために、ユーザーからの入力を受け付けるためのボタンとしても使われる -->
+    <button data-playing="false" role="switch" aria-checked="false">
+      Play/Pause
+    </button>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
