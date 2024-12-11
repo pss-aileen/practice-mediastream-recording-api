@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Using the Web Audio API 20241211</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!--  オーディオは controls をつけてはじめて、再生ツールが表示される -->
+  <audio src="./audio.mp3" controls></audio>
+
+  <section>
+    <!-- オーディオの再生がブロックされないために、ユーザーからの入力を受け付けるためのボタンとしても使われる -->
+    <button data-playing="false" role="switch" aria-checked="false">
+      Play/Pause
+    </button>
+
+    <label>
+      gainNode:
+      <!-- gainNode の調整 -->
+      <!-- gainは -3.4 から 3.4 ぐらいまでしか変更ができない。そのため、今回は 0 から 2 で制限。デフォルトは 1 -->
+      <input type="range" id="volume" min="0" max="2" value="1" step="0.01">
+    </label>
+
+    <label>
+      panner:
+      <!-- StereoPannerNode の調整 -->
+      <!-- 左が -1、右が 1 -->
+      <input type="range" id="panner" min="-1" max="1" value="0" , step="0.01">
+    </label>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
