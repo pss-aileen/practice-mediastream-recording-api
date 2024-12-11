@@ -23,6 +23,7 @@
 
   const recBtn = document.getElementById('rec');
   const stopBtn = document.getElementById('stop');
+  const pitch = document.getElementById('pitch');
 
   const permissionBtn = document.getElementById('permission');
   const permissionCloseBtn = document.getElementById('permission-close');
@@ -56,9 +57,18 @@
   // [❔] 物理的にもう一度許可をもらいなおす方法や、あらためて拒否する方法があるのか知りたい。
 
   function init() {
+    // recorder 初期設定
     const recorder = new Tone.Recorder();
-    mic.connect(recorder);
-    // mic.toDestination();
+
+    // pitchShift 初期設定
+    const pitchShift = new Tone.PitchShift({ pitch: 1 });
+
+    // 音源をPitchShiftへパス
+    mic.connect(pitchShift);
+    // 音源 + PitchShift を recorder にパス
+    pitchShift.connect(recorder);
+
+    pitchShift.toDestination();
 
     recBtn.addEventListener('click', () => {
       console.log('rec start');
@@ -73,6 +83,10 @@
       anchor.download = 'recording.webm';
       anchor.href = url;
       anchor.click();
+    });
+
+    pitch.addEventListener('input', () => {
+      pitchShift.pitch = pitch.value;
     });
   }
 
