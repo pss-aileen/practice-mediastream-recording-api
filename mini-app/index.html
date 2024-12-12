@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Record Voice with PitchShift</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <section class="wrapper">
+
+    <h1>Recorder with PitchShift</h1>
+
+    <section>
+      <h2>Status</h2>
+
+      <ul>
+        <li>permission: <span id="permission-flag">-</span></li>
+        <li>recording: <span id="recording-flag">-</span></li>
+      </ul>
+    </section>
+
+
+    <section>
+      <h2>Mic Permission</h2>
+
+      <button id="permission">permission</button>
+      <button id="permission-close" disabled>permission-close</button>
+    </section>
+
+    <section>
+      <h2>Rec</h2>
+
+      <button id="rec" disabled>REC</button>
+      <button id="stop" disabled>STOP</button>
+    </section>
+
+    <section class="setting">
+      <h2>Setting</h2>
+
+      <label>
+        Pitch:
+        <input type="range" min="-10" max="10" value="0" step="1" id="pitch">
+      </label>
+    </section>
+
+    <section id="sound">
+      <h2>Outputs</h2>
+      <!-- 基本的に視聴してからダウンロードする方式で -->
+
+      <section id="sound-container">
+
+      </section>
+
+      <!-- <div>
+        <p>Wed Dec 11 2024 20:01:25 GMT+0900 (日本標準時)</p>
+        <div>
+          <audio controls="" src="#">
+          </audio>
+          <a download="recording.webm" href="#">
+            DOWNLOAD
+          </a>
+        </div>
+      </div> -->
+    </section>
+  </section>
+
+
+
+
+
+
+
+
+  <!-- Tone.js CDN -->
+  <script src="http://unpkg.com/tone"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>
