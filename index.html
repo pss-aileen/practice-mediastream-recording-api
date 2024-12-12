@@ -9,7 +9,65 @@
 </head>
 
 <body>
-  <div id="app"></div>
+
+  <section class="wrapper">
+    <section class="control-panel">
+      <h1>
+        <span>Record Voice</span>
+        <span>With Tone.js - PitchShift</span>
+      </h1>
+
+      <section class="controller">
+        <h2>
+          <span>
+            Controler
+          </span>
+        </h2>
+
+        <dl class="mic">
+          <dt>Mic Permission</dt>
+          <dd>
+            <p>This app need to access your browser audio. Please enable this before your recording.</p>
+            <button>ENABLE</button>
+            <button>DISABLE</button>
+          </dd>
+        </dl>
+
+        <dl class="record">
+          <dt>Record</dt>
+          <dd>
+            <div class="visualizer"></div>
+            <button>START</button>
+            <button>STOP</button>
+          </dd>
+        </dl>
+
+        <dl class="pitch">
+          <dt>
+            <label for="pitch">
+              Pitch
+            </label>
+          </dt>
+          <dd><input type="range" min="-10" max="10" value="0" id="pitch"></dd>
+        </dl>
+        <!-- どうにかこうにか黒色で、調整できるものにする -->
+      </section>
+
+
+    </section>
+    <section class="voice">
+      <h2>
+        <span>
+          Sounds
+        </span>
+      </h2>
+
+      <div>
+
+      </div>
+    </section>
+  </section>
+
   <script type="module" src="/src/main.ts"></script>
 </body>
 
