@@ -22,14 +22,15 @@
     - インプットの種類を将来的に選ぼう
   */
 
+  // 入力、ボタン系取得
   const recBtn = document.getElementById('rec');
   const stopBtn = document.getElementById('stop');
   const pitch = document.getElementById('pitch');
   const soundContainer = document.getElementById('sound-container');
-
   const permissionBtn = document.getElementById('permission');
   const permissionCloseBtn = document.getElementById('permission-close');
 
+  // ブラウザのオーディオ取得準備
   const mic = new Tone.UserMedia();
 
   let micPermission = false;
@@ -43,16 +44,24 @@
         console.log('mic open');
         renderPermissionFlag();
         init();
+        permissionBtn.disabled = true;
         // あとで、きちんと許可されているかされていないかで制御ができたらいいなぁ...
       })
       .catch((e) => console.error('error', e));
   });
 
   // マイク接続切断
-  permissionCloseBtn.addEventListener('click', () => {
+  permissionCloseBtn.addEventListener('click', async () => {
     mic.close();
     renderPermissionFlag();
     console.log('mic close');
+    permissionBtn.disabled = false;
+    permissionCloseBtn.disabled = true;
+
+    console.log('mic state: ', mic.state);
+
+    recBtn.disabled = true;
+    stopBtn.disabled = true;
   });
 
   // [❔] 物理的にもう一度許可をもらいなおす方法や、あらためて拒否する方法があるのか知りたい。
@@ -89,6 +98,8 @@
       console.log('rec stop');
       renderRecordingFlag();
       recBtn.disabled = false;
+      stopBtn.disabled = true;
+      permissionCloseBtn.disabled = false;
 
       // レコーディング終了、音声のblobが返却される
       const recording = await recorder.stop();
@@ -130,6 +141,8 @@
     pitch.addEventListener('input', () => {
       pitchShift.pitch = pitch.value;
     });
+
+    // permissionがきれたら、stopする
   }
 
   function renderPermissionFlag() {
