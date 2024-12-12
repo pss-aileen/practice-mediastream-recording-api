@@ -37,6 +37,11 @@ button:disabled {
   cursor: not-allowed;
 }
 
+button.is-recording {
+  background: red;
+  color: #fff;
+}
+
 /* wrapper */
 
 .wrapper {
@@ -61,6 +66,12 @@ button:disabled {
 
     h2 + * {
       margin-top: 16px;
+    }
+  }
+
+  .setting {
+    label {
+      display: block;
     }
   }
 

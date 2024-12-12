@@ -10,16 +10,17 @@
       - 将来的には20秒ぐらいで止めます
     - 終わったら、エレメントとしてsoundsに展開: done
     - 音楽をそこで確認、削除、ダウンロードできるようにする: done
-    - UIをととのえる
+    - UIをととのえる: done
     - DONE!
 
     [FUTURE]
     - 録音秒数の表示、制限時間も
-    - 「録音中」の雰囲気、テキストを表示する
+    - 「録音中」の雰囲気、テキストを表示する: done
     - 可能だったらファイルのサイズなんかも表示したい...が...
     - あと長さも！
     - ビジュアライザーを出して、録音できているか確認できるようにしたい
     - インプットの種類を将来的に選ぼう
+    - ピッチのオンオフ
   */
 
   // 入力、ボタン系取得
@@ -33,6 +34,7 @@
   // ブラウザのオーディオ取得準備
   const mic = new Tone.UserMedia();
 
+  // 状態
   let micPermission = false;
   let isRecording = false;
 
@@ -45,7 +47,6 @@
         renderPermissionFlag();
         init();
         permissionBtn.disabled = true;
-        // あとで、きちんと許可されているかされていないかで制御ができたらいいなぁ...
       })
       .catch((e) => console.error('error', e));
   });
@@ -54,12 +55,11 @@
   permissionCloseBtn.addEventListener('click', async () => {
     mic.close();
     renderPermissionFlag();
+
     console.log('mic close');
+
     permissionBtn.disabled = false;
     permissionCloseBtn.disabled = true;
-
-    console.log('mic state: ', mic.state);
-
     recBtn.disabled = true;
     stopBtn.disabled = true;
   });
@@ -71,7 +71,7 @@
     const recorder = new Tone.Recorder();
 
     // pitchShift 初期設定
-    const pitchShift = new Tone.PitchShift({ pitch: 1 });
+    const pitchShift = new Tone.PitchShift({ pitch: pitch.value });
 
     // 音源をPitchShiftへパス
     mic.connect(pitchShift);
@@ -92,6 +92,8 @@
       recorder.start();
       recBtn.disabled = true;
       stopBtn.disabled = false;
+      recBtn.textContent = 'Recording...';
+      recBtn.classList.add('is-recording');
     });
 
     stopBtn.addEventListener('click', async () => {
@@ -100,12 +102,21 @@
       recBtn.disabled = false;
       stopBtn.disabled = true;
       permissionCloseBtn.disabled = false;
+      recBtn.textContent = 'Record';
+      recBtn.classList.remove('is-recording');
 
       // レコーディング終了、音声のblobが返却される
       const recording = await recorder.stop();
+      console.log(recording);
 
       // Blobから音声のURLを作成する
       const url = window.URL.createObjectURL(recording);
+
+      // 容量を計算する
+      const sizeInKB = (recording.size / 1034).toFixed(2);
+      const sizeInMB = (sizeInKB / 1034).toFixed(2);
+      console.log(sizeInKB + 'kb');
+      console.log(sizeInMB + 'mb');
 
       // 要素の容器を作成
       const containerElement = document.createElement('div');
@@ -144,6 +155,10 @@
 
     // permissionがきれたら、stopする
   }
+
+  /* 
+    [UTILS]
+  */
 
   function renderPermissionFlag() {
     micPermission = !micPermission;
