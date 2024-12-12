@@ -29,6 +29,10 @@ body {
   box-sizing: border-box;
 }
 
+a {
+  color: inherit;
+}
+
 button {
   padding: 8px 16px;
   background: #111;
