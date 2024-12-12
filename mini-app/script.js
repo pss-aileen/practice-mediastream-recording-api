@@ -73,38 +73,11 @@
     // pitchShift 初期設定
     const pitchShift = new Tone.PitchShift({ pitch: pitch.value });
 
-    /* 
-    色々挑戦
-   */
-
-    // そのままのクラッシュした音
-    const crusher = new Tone.BitCrusher(4);
-    // ディストーション系
-    const cheby = new Tone.Chebyshev(2);
-    const dist = new Tone.Distortion(0.4);
-    // よくわからん
-    const shift = new Tone.FrequencyShifter(42);
-    const tremolo = new Tone.Tremolo(9, 0.75);
-    // ぴちぴちいってます
-    const phaser = new Tone.Phaser({
-      frequency: 15,
-      octaves: 5,
-      baseFrequency: 1000,
-    });
-    const pingPong = new Tone.PingPongDelay('4n', 0.2);
-    const autoWah = new Tone.AutoWah(50, 6, -30);
-    const autoFilter = new Tone.AutoFilter('4n');
-
-    mic.connect(pitchShift);
-    pitchShift.connect(autoWah);
-    autoWah.connect(recorder);
-    // autoWah.toDestination();
-
     // 音源をPitchShiftへパス
-    // mic.connect(pitchShift);
+    mic.connect(pitchShift);
 
     // 音源 + PitchShift を recorder にパス
-    // pitchShift.connect(recorder);
+    pitchShift.connect(recorder);
 
     // 🧪 確認用: 音源 + PitchShift を スピーカー にパス
     // pitchShift.toDestination();
