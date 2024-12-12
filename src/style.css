@@ -179,7 +179,7 @@ button.is-recording {
           .size {
             display: inline-block;
             color: #999;
-            margin-left: 4px;
+            margin-left: 8px;
             /* font-size: 12px; */
           }
 
@@ -193,6 +193,7 @@ button.is-recording {
             display: inline-block;
             padding: 2px 4px;
             font-weight: bold;
+            animation: brightAndFadeOut 1s 5 forwards;
           }
         }
 
@@ -350,5 +351,19 @@ button.is-recording {
     input[type='range']:focus::-ms-fill-upper {
       background: rgb(0 0 0 / 0.1);
     }
+  }
+}
+
+@keyframes brightAndFadeOut {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
   }
 }
