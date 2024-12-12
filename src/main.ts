@@ -22,6 +22,7 @@ const outputContainer = document.getElementById('outputs') as HTMLElement;
 
 // prepare for mic input
 const browserMic = new Tone.UserMedia();
+let recorder: Tone.Recorder | null;
 
 browserMicEnableBtn.addEventListener('click', () => {
   console.log('browserMicEnableBtn');
@@ -33,7 +34,8 @@ browserMicEnableBtn.addEventListener('click', () => {
       console.log(browserMic.state);
 
       // prepare for recording
-      const recorder = new Tone.Recorder();
+      // const recorder = new Tone.Recorder();
+      recorder = new Tone.Recorder();
 
       // prepare for pitchShift
       const pitchInputValue: number = parseInt(pitchInput.value);
@@ -61,6 +63,11 @@ browserMicEnableBtn.addEventListener('click', () => {
       recordStartBtn.addEventListener('click', () => {
         console.log('recordStartBtn');
 
+        if (!recorder) {
+          console.error('There is no recorder.');
+          return;
+        }
+
         // start to record
         recorder.start();
 
@@ -73,6 +80,11 @@ browserMicEnableBtn.addEventListener('click', () => {
       // stop recording
       recordStopBtn.addEventListener('click', async () => {
         console.log('recordStopBtn');
+
+        if (!recorder) {
+          console.error('There is no recorder.');
+          return;
+        }
 
         // change element style
         buttonDisabled(true, false, false, true);
@@ -146,6 +158,7 @@ browserMicDisableBtn.addEventListener('click', () => {
   browserMic.close();
   console.log(browserMic.state);
   buttonDisabled(false, true, true, true);
+  recorder = null;
 });
 
 // [FUNCTIONS]
