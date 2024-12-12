@@ -8,10 +8,17 @@ import * as Tone from 'tone';
   - プレイヤーをもっと操作しやすくしたい。自分で実装したい。 -> しなくてもいいかも。
 */
 
+// buttons
 const browserMicEnableBtn = document.getElementById('browser-mic-enable') as HTMLButtonElement;
 const browserMicDisableBtn = document.getElementById('browser-mic-disable') as HTMLButtonElement;
 const recordStartBtn = document.getElementById('record-start') as HTMLButtonElement;
 const recordStopBtn = document.getElementById('record-stop') as HTMLButtonElement;
+
+// setting
+const pitch = document.getElementById('pitch');
+
+// dom
+const outputContainer = document.getElementById('output');
 
 browserMicEnableBtn.addEventListener('click', () => {
   console.log('browserMicEnableBtn');
