@@ -18,31 +18,34 @@ const outputContainer = document.getElementById('outputs') as HTMLElement;
 /* 
   PREPARE FOR AUDIO
 */
-const browserMic = new Tone.UserMedia();
+let browserMic: Tone.UserMedia | null;
 let isBrowerMicOpen = false;
 
 let recorder: Tone.Recorder | null;
 let pitchShift: Tone.PitchShift | null;
 
-const fft = new Tone.FFT(128);
-
+let fft: Tone.FFT | null;
 
 /* 
   [EVENT] BROWSER MIC ENABLE
 */
-browserMicEnableBtn.addEventListener('click', () => {
+browserMicEnableBtn.addEventListener('click', async () => {
+  browserMic = new Tone.UserMedia();
+
   // enable browser mic
   browserMic
     .open()
     .then(() => {
+      if (!browserMic) return;
       isBrowerMicOpen = true;
 
       // change element style
-      buttonDisabled(true, false, false, true);
+      setButtonDisabled({ enable: true, disable: false, start: false, stop: true });
 
       // initialize for recording
       recorder = new Tone.Recorder();
       pitchShift = new Tone.PitchShift();
+      fft = new Tone.FFT(128);
 
       const pitchInputValue: number = parseFloat(pitchInput.value);
       pitchShift.pitch = pitchInputValue;
@@ -57,19 +60,20 @@ browserMicEnableBtn.addEventListener('click', () => {
   [EVENT] BROWSER MIC DISABLE
 */
 browserMicDisableBtn.addEventListener('click', () => {
+  if (!browserMic) return;
+
   // disable browser mic
   browserMic.close();
   isBrowerMicOpen = false;
 
   // change element style
-  buttonDisabled(false, true, true, true);
+  setButtonDisabled({ enable: false, disable: true, start: true, stop: true });
 });
 
 /* 
   [EVENT] PITCH SHIFT INPUT
 */
 pitchInput.addEventListener('input', (e) => {
-  checkValid(pitchShift);
   if (!pitchShift) return;
 
   const eventTarget = e.target as HTMLInputElement;
@@ -81,10 +85,7 @@ pitchInput.addEventListener('input', (e) => {
   [EVENT] RECORD START
 */
 recordStartBtn.addEventListener('click', () => {
-  checkValid(pitchShift);
-  checkValid(recorder);
-  checkValid(isBrowerMicOpen);
-  if (!(pitchShift && recorder && isBrowerMicOpen)) return;
+  if (!(pitchShift && recorder && isBrowerMicOpen && browserMic && fft)) return;
 
   // add sound effect: browserMic -> pitchShift
   browserMic.disconnect(fft);
@@ -101,7 +102,7 @@ recordStartBtn.addEventListener('click', () => {
   recorder.start();
 
   // change element style
-  buttonDisabled(true, true, true, false);
+  setButtonDisabled({ enable: true, disable: true, start: true, stop: false });
   recordStartBtn.classList.add('is-recording');
   recordStartBtn.innerHTML = '<i class="bi bi-record-circle-fill"></i> Recording...';
 });
@@ -110,14 +111,13 @@ recordStartBtn.addEventListener('click', () => {
   RECORD STOP
 */
 recordStopBtn.addEventListener('click', async () => {
-  checkValid(pitchShift);
-  checkValid(recorder);
-  if (!(pitchShift && recorder)) return;
+  if (!(pitchShift && recorder && browserMic && fft)) return;
 
   // change element style
-  buttonDisabled(true, false, false, true);
+  setButtonDisabled({ enable: true, disable: false, start: false, stop: true });
+
   recordStartBtn.classList.remove('is-recording');
-  recordStartBtn.innerHTML = '<i class="bi bi-record-circle"></i> Record';
+  recordStartBtn.innerHTML = '<i class="bi bi-record-circle"></i> START';
 
   // stop recording: get audio from recorder, return is blob
   const recording = await recorder.stop();
@@ -135,12 +135,13 @@ recordStopBtn.addEventListener('click', async () => {
 
   // title element: time
   const nowDate = new Date();
-  const year = String(nowDate.getFullYear());
-  const month = String(nowDate.getMonth()).padStart(2, '0');
-  const date = String(nowDate.getDate()).padStart(2, '0');
-  const hour = String(nowDate.getHours()).padStart(2, '0');
-  const minute = String(nowDate.getMinutes()).padStart(2, '0');
-  const second = String(nowDate.getSeconds()).padStart(2, '0');
+  const pad = (num: number) => num.toString().padStart(2, '0');
+  const year = nowDate.getFullYear().toString();
+  const month = pad(nowDate.getMonth());
+  const date = pad(nowDate.getDate());
+  const hour = pad(nowDate.getHours());
+  const minute = pad(nowDate.getMinutes());
+  const second = pad(nowDate.getSeconds());
   const titleText = year + month + date + '-' + hour + minute + '-' + second;
   const titleElement = document.createElement('span');
   titleElement.classList.add('title');
@@ -184,27 +185,24 @@ recordStopBtn.addEventListener('click', async () => {
 /* 
   [FUNCTIONS]
 */
-function buttonDisabled(browserMicEnableBtnCondition: boolean, browserMicDisableBtnCondition: boolean, recordStartBtnCondition: boolean, recordStopBtnCondition: boolean): void {
-  browserMicEnableBtn.disabled = browserMicEnableBtnCondition;
-  browserMicDisableBtn.disabled = browserMicDisableBtnCondition;
-  recordStartBtn.disabled = recordStartBtnCondition;
-  recordStopBtn.disabled = recordStopBtnCondition;
-}
 
-function checkValid(variable: any) {
-  if (!variable) {
-    throw new Error(`There is no ${variable}.`);
-  }
+function setButtonDisabled(states: { enable: boolean; disable: boolean; start: boolean; stop: boolean }) {
+  browserMicEnableBtn.disabled = states.enable;
+  browserMicDisableBtn.disabled = states.disable;
+  recordStartBtn.disabled = states.start;
+  recordStopBtn.disabled = states.stop;
 }
 
 /* 
-  Visualizer
+  [VISUALIZER]
 */
 
 const canvas = document.getElementById('visualizer') as HTMLCanvasElement;
 const canvasContext = canvas.getContext('2d') as CanvasRenderingContext2D;
 
 function draw() {
+  if (!fft) return;
+
   const spectrum = fft.getValue();
 
   const minDB = -100;
