@@ -47,6 +47,8 @@ npm run dev
 
 ---
 
+[The Japanese version is provided above.](#概要)
+
 ## Overview
 
 This project is a web application that allows users to record their voice, adjust the pitch, and save the audio. It leverages the Tone.js library to simplify audio processing.
