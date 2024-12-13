@@ -59,6 +59,7 @@ button.is-recording {
 }
 
 /* animation */
+
 @keyframes glitch {
   0% {
     transform: translate(0.4px, -0.4px);
@@ -66,32 +67,41 @@ button.is-recording {
     box-shadow: 2px 2px 0 rgba(255, 0, 0, 1), -2px -2px 0 rgba(0, 0, 255, 1);
     cursor: grab;
   }
-
   20% {
     text-shadow: 4px 2px 0 rgba(255, 0, 0, 1), -2px -4px 0 rgba(0, 0, 255, 1);
     box-shadow: -2px -3px 0 rgba(255, 0, 0, 1), 3px 2px 0 rgba(0, 0, 255, 1);
   }
-
   40% {
     text-shadow: -2px -3px 0 rgba(255, 0, 0, 1), 2px 4px 0 rgba(0, 0, 255, 1);
     box-shadow: 2px 4px 0 rgba(255, 0, 0, 1), -4px -2px 0 rgba(0, 0, 255, 1);
     cursor: move;
   }
-
   60% {
     text-shadow: 1px 2px 0 rgba(255, 0, 0, 1), -4px -2px 0 rgba(0, 0, 255, 1);
     box-shadow: -2px -1px 0 rgba(255, 0, 0, 1), -2px 1px 0 rgba(0, 0, 255, 1);
   }
-
   80% {
     text-shadow: -2px -1px 0 rgba(255, 0, 0, 1), 2px 2px 0 rgba(0, 0, 255, 1);
     box-shadow: 2px 2px 0 rgba(255, 0, 0, 1), 4px -4px 0 rgba(0, 0, 255, 1);
     cursor: help;
   }
-
   100% {
     text-shadow: 3px 2px 0 rgba(255, 0, 0, 1), -1px -0px 0 rgba(0, 0, 255, 1);
     box-shadow: -2px -2px 0 rgba(255, 0, 0, 1), 1px 2px 0 rgba(0, 0, 255, 1);
+  }
+}
+
+@keyframes brightAndFadeOut {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
   }
 }
 
@@ -225,7 +235,6 @@ button.is-recording {
             display: inline-block;
             color: #999;
             margin-left: 8px;
-            /* font-size: 12px; */
           }
 
           .label {
@@ -274,10 +283,6 @@ button.is-recording {
   }
 
   .pitch {
-    /* input {
-      width: 100%;
-    } */
-
     /* Thanks to https://www.cssportal.com/style-input-range/#google_vignette */
 
     .meter {
@@ -305,7 +310,6 @@ button.is-recording {
         width: 0px;
         height: 36px;
         border-left: 1px dashed #999;
-        /* background: #999; */
       }
     }
 
@@ -396,19 +400,5 @@ button.is-recording {
     input[type='range']:focus::-ms-fill-upper {
       background: rgb(0 0 0 / 0.1);
     }
-  }
-}
-
-@keyframes brightAndFadeOut {
-  0% {
-    opacity: 0;
-  }
-
-  50% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
   }
 }
