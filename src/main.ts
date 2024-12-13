@@ -23,6 +23,10 @@ let isBrowerMicOpen = false;
 
 let recorder: Tone.Recorder | null;
 let pitchShift: Tone.PitchShift | null;
+// let fft =
+const fft = new Tone.FFT(128);
+// pitchShift.connect(fft);
+// console.log(fft);
 
 /* 
   [EVENT] BROWSER MIC ENABLE
@@ -85,6 +89,13 @@ recordStartBtn.addEventListener('click', () => {
 
   // pass audio to recorder: pitchShift -> recorder
   pitchShift.connect(recorder);
+
+  pitchShift.connect(fft);
+
+  // ⭐️
+  // const fft = new Tone.FFT();
+  // pitchShift.connect(fft);
+  // console.log(fft);
 
   // 🧪 For checking: audio goes to speakers
   // pitchShift.toDestination();
@@ -185,3 +196,49 @@ function checkValid(variable: any) {
     throw new Error(`There is no ${variable}.`);
   }
 }
+
+/* 
+  Visualizer
+*/
+
+const canvas = document.getElementById('visualizer') as HTMLCanvasElement;
+const canvasContext = canvas.getContext('2d') as CanvasRenderingContext2D;
+
+let x = 0;
+// setInterval(() => {
+//   ;
+// }, 100);
+
+const MIN_DB = -100;
+const MAX_DB = 0;
+
+const width = canvas.width / 64;
+const height = canvas.height;
+
+function draw() {
+  canvasContext.clearRect(0, 0, canvas.width, height);
+  x++;
+  canvasContext.fillStyle = '#fff';
+
+  const spectrum = fft.getValue().map((value) => (value === -Infinity ? MIN_DB : value));
+  const amplitude = spectrum.map((value) => (value === -Infinity ? 0 : Math.pow(10, value / 20)));
+
+  // const value = fft.getValue()[200];
+  // const value = (amplitude[100] * 1000000) / 2;
+  // console.log(value);
+  // canvasContext.fillRect(20, value, 1, 1);
+  // canvasContext.fillRect(x, 0, 2, 200);
+  canvasContext.fillRect(x, 0, 2, 200);
+
+  console.log(amplitude[1] * -10000);
+
+  for (let i = 0; i < 64; i++) {
+    const value = amplitude[i] * -10000 * 2;
+    canvasContext.fillRect(i * width, value + height - 4, width, 4);
+  }
+
+  window.requestAnimationFrame(draw);
+}
+
+draw();
+// window.requestAnimationFrame(test);
