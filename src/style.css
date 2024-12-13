@@ -63,13 +63,13 @@ button.is-recording {
 @keyframes glitch {
   0% {
     transform: translate(0.4px, -0.4px);
-    text-shadow: -2px -2px 0 rgba(255, 0, 0, 1), 2px 2px 0 rgba(0, 0, 255, 1);
+    text-shadow: -2px -2px 0 rgba(255, 0, 0, 1), 2px 2px 0 #00ffff;
     box-shadow: 2px 2px 0 rgba(255, 0, 0, 1), -2px -2px 0 rgba(0, 0, 255, 1);
     cursor: grab;
   }
   20% {
     text-shadow: 4px 2px 0 rgba(255, 0, 0, 1), -2px -4px 0 rgba(0, 0, 255, 1);
-    box-shadow: -2px -3px 0 rgba(255, 0, 0, 1), 3px 2px 0 rgba(0, 0, 255, 1);
+    box-shadow: -2px -3px 0 #ff00ff, 3px 2px 0 rgba(0, 0, 255, 1);
   }
   40% {
     text-shadow: -2px -3px 0 rgba(255, 0, 0, 1), 2px 4px 0 rgba(0, 0, 255, 1);
@@ -78,7 +78,7 @@ button.is-recording {
   }
   60% {
     text-shadow: 1px 2px 0 rgba(255, 0, 0, 1), -4px -2px 0 rgba(0, 0, 255, 1);
-    box-shadow: -2px -1px 0 rgba(255, 0, 0, 1), -2px 1px 0 rgba(0, 0, 255, 1);
+    box-shadow: -2px -1px 0 rgba(255, 0, 0, 1), -2px 1px 0 #00ffff;
   }
   80% {
     text-shadow: -2px -1px 0 rgba(255, 0, 0, 1), 2px 2px 0 rgba(0, 0, 255, 1);
@@ -86,7 +86,7 @@ button.is-recording {
     cursor: help;
   }
   100% {
-    text-shadow: 3px 2px 0 rgba(255, 0, 0, 1), -1px -0px 0 rgba(0, 0, 255, 1);
+    text-shadow: 3px 2px 0 #ff00ff, -1px -0px 0 rgba(0, 0, 255, 1);
     box-shadow: -2px -2px 0 rgba(255, 0, 0, 1), 1px 2px 0 rgba(0, 0, 255, 1);
   }
 }

@@ -47,6 +47,9 @@ browserMicEnableBtn.addEventListener('click', () => {
 
       const pitchInputValue: number = parseFloat(pitchInput.value);
       pitchShift.pitch = pitchInputValue;
+
+      browserMic.connect(fft);
+      draw();
     })
     .catch((e) => console.error('Error:', e));
 });
@@ -85,11 +88,11 @@ recordStartBtn.addEventListener('click', () => {
   if (!(pitchShift && recorder && isBrowerMicOpen)) return;
 
   // add sound effect: browserMic -> pitchShift
+  browserMic.disconnect(fft);
   browserMic.connect(pitchShift);
 
   // pass audio to recorder: pitchShift -> recorder
   pitchShift.connect(recorder);
-
   pitchShift.connect(fft);
 
   // ⭐️
@@ -179,6 +182,9 @@ recordStopBtn.addEventListener('click', async () => {
   containerWrapper.appendChild(titleContainer);
   containerWrapper.appendChild(bodyContainer);
   outputContainer.prepend(containerWrapper);
+
+  pitchShift.disconnect(fft);
+  browserMic.connect(fft);
 });
 
 /* 
@@ -204,41 +210,25 @@ function checkValid(variable: any) {
 const canvas = document.getElementById('visualizer') as HTMLCanvasElement;
 const canvasContext = canvas.getContext('2d') as CanvasRenderingContext2D;
 
-let x = 0;
-// setInterval(() => {
-//   ;
-// }, 100);
-
-const MIN_DB = -100;
-const MAX_DB = 0;
-
-const width = canvas.width / 64;
-const height = canvas.height;
-
 function draw() {
-  canvasContext.clearRect(0, 0, canvas.width, height);
-  x++;
-  canvasContext.fillStyle = '#fff';
+  const spectrum = fft.getValue();
 
-  const spectrum = fft.getValue().map((value) => (value === -Infinity ? MIN_DB : value));
-  const amplitude = spectrum.map((value) => (value === -Infinity ? 0 : Math.pow(10, value / 20)));
+  const minDB = -100;
+  const maxDB = 0;
+  const canvasHeight = canvas.height;
 
-  // const value = fft.getValue()[200];
-  // const value = (amplitude[100] * 1000000) / 2;
-  // console.log(value);
-  // canvasContext.fillRect(20, value, 1, 1);
-  // canvasContext.fillRect(x, 0, 2, 200);
-  canvasContext.fillRect(x, 0, 2, 200);
+  canvasContext.clearRect(0, 0, canvas.width, canvas.height);
 
-  console.log(amplitude[1] * -10000);
-
-  for (let i = 0; i < 64; i++) {
-    const value = amplitude[i] * -10000 * 2;
-    canvasContext.fillRect(i * width, value + height - 4, width, 4);
-  }
-
+  const barWidth = canvas.width / spectrum.length;
+  spectrum.forEach((value, index) => {
+    const height = Math.max(0, (canvasHeight * (value - minDB)) / (maxDB - minDB));
+    const x = index * barWidth;
+    canvasContext.fillStyle = 'red';
+    canvasContext.fillRect(x - 0.5, canvasHeight - height + 2, barWidth, height);
+    canvasContext.fillStyle = 'blue';
+    canvasContext.fillRect(x + 0.5, canvasHeight - height + 1, barWidth, height);
+    canvasContext.fillStyle = '#ffffff';
+    canvasContext.fillRect(x, canvasHeight - height, barWidth - 1.5, height);
+  });
   window.requestAnimationFrame(draw);
 }
-
-draw();
-// window.requestAnimationFrame(test);
