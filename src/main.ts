@@ -23,10 +23,9 @@ let isBrowerMicOpen = false;
 
 let recorder: Tone.Recorder | null;
 let pitchShift: Tone.PitchShift | null;
-// let fft =
+
 const fft = new Tone.FFT(128);
-// pitchShift.connect(fft);
-// console.log(fft);
+
 
 /* 
   [EVENT] BROWSER MIC ENABLE
@@ -94,11 +93,6 @@ recordStartBtn.addEventListener('click', () => {
   // pass audio to recorder: pitchShift -> recorder
   pitchShift.connect(recorder);
   pitchShift.connect(fft);
-
-  // ⭐️
-  // const fft = new Tone.FFT();
-  // pitchShift.connect(fft);
-  // console.log(fft);
 
   // 🧪 For checking: audio goes to speakers
   // pitchShift.toDestination();
