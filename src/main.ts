@@ -220,13 +220,17 @@ function draw() {
   canvasContext.clearRect(0, 0, canvas.width, canvas.height);
 
   const barWidth = canvas.width / spectrum.length;
+
   spectrum.forEach((value, index) => {
     const height = Math.max(0, (canvasHeight * (value - minDB)) / (maxDB - minDB));
     const x = index * barWidth;
+
     canvasContext.fillStyle = 'red';
-    canvasContext.fillRect(x - 0.5, canvasHeight - height + 2, barWidth, height);
+    canvasContext.fillRect(x + 1, canvasHeight - height + 1, barWidth - 1.5, height);
+
     canvasContext.fillStyle = 'blue';
-    canvasContext.fillRect(x + 0.5, canvasHeight - height + 1, barWidth, height);
+    canvasContext.fillRect(x + 0.5, canvasHeight - height + 1, barWidth - 1.5, height);
+
     canvasContext.fillStyle = '#ffffff';
     canvasContext.fillRect(x, canvasHeight - height, barWidth - 1.5, height);
   });
