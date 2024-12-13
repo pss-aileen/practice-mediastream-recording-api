@@ -23,6 +23,10 @@ let isBrowerMicOpen = false;
 
 let recorder: Tone.Recorder | null;
 let pitchShift: Tone.PitchShift | null;
+// let fft =
+const fft = new Tone.FFT(128);
+// pitchShift.connect(fft);
+// console.log(fft);
 
 /* 
   [EVENT] BROWSER MIC ENABLE
@@ -43,6 +47,9 @@ browserMicEnableBtn.addEventListener('click', () => {
 
       const pitchInputValue: number = parseFloat(pitchInput.value);
       pitchShift.pitch = pitchInputValue;
+
+      browserMic.connect(fft);
+      draw();
     })
     .catch((e) => console.error('Error:', e));
 });
@@ -81,10 +88,17 @@ recordStartBtn.addEventListener('click', () => {
   if (!(pitchShift && recorder && isBrowerMicOpen)) return;
 
   // add sound effect: browserMic -> pitchShift
+  browserMic.disconnect(fft);
   browserMic.connect(pitchShift);
 
   // pass audio to recorder: pitchShift -> recorder
   pitchShift.connect(recorder);
+  pitchShift.connect(fft);
+
+  // ⭐️
+  // const fft = new Tone.FFT();
+  // pitchShift.connect(fft);
+  // console.log(fft);
 
   // 🧪 For checking: audio goes to speakers
   // pitchShift.toDestination();
@@ -168,6 +182,9 @@ recordStopBtn.addEventListener('click', async () => {
   containerWrapper.appendChild(titleContainer);
   containerWrapper.appendChild(bodyContainer);
   outputContainer.prepend(containerWrapper);
+
+  pitchShift.disconnect(fft);
+  browserMic.connect(fft);
 });
 
 /* 
@@ -184,4 +201,38 @@ function checkValid(variable: any) {
   if (!variable) {
     throw new Error(`There is no ${variable}.`);
   }
+}
+
+/* 
+  Visualizer
+*/
+
+const canvas = document.getElementById('visualizer') as HTMLCanvasElement;
+const canvasContext = canvas.getContext('2d') as CanvasRenderingContext2D;
+
+function draw() {
+  const spectrum = fft.getValue();
+
+  const minDB = -100;
+  const maxDB = 0;
+  const canvasHeight = canvas.height;
+
+  canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+
+  const barWidth = canvas.width / spectrum.length;
+
+  spectrum.forEach((value, index) => {
+    const height = Math.max(0, (canvasHeight * (value - minDB)) / (maxDB - minDB));
+    const x = index * barWidth;
+
+    canvasContext.fillStyle = 'red';
+    canvasContext.fillRect(x + 1, canvasHeight - height + 1, barWidth - 1.5, height);
+
+    canvasContext.fillStyle = 'blue';
+    canvasContext.fillRect(x + 0.5, canvasHeight - height + 1, barWidth - 1.5, height);
+
+    canvasContext.fillStyle = '#ffffff';
+    canvasContext.fillRect(x, canvasHeight - height, barWidth - 1.5, height);
+  });
+  window.requestAnimationFrame(draw);
 }

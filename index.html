@@ -45,7 +45,7 @@
         <dl class="mic">
           <dt>Mic Permission</dt>
           <dd>
-            <p>This app need to access your browser audio. Please enable this before your recording.</p>
+            <p>This app needs access to your browser's audio. Please enable it before recording.</p>
             <button id="browser-mic-enable"><i class="bi bi-mic-fill"></i> ENABLE</button>
             <button id="browser-mic-disable" disabled><i class="bi bi-mic-mute-fill"></i> DISABLE</button>
           </dd>
@@ -54,7 +54,7 @@
         <dl class="record">
           <dt>Record</dt>
           <dd>
-            <div class="visualizer"></div>
+            <canvas id="visualizer" width="516" height="62"></canvas>
             <button id="record-start" disabled><i class="bi bi-record-circle"></i> START</button>
             <button id="record-stop" disabled><i class="bi bi-stop-fill"></i> STOP</button>
           </dd>
@@ -104,7 +104,7 @@
         </span>
       </h2>
 
-      <p>If you reload this page, these recordings will be delated.</p>
+      <p>If you reload this page, these recordings will be deleted.</p>
 
       <div id="outputs">
       </div>
