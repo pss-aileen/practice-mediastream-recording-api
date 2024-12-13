@@ -39,19 +39,10 @@ browserMicEnableBtn.addEventListener('click', () => {
 
       // initialize for recording
       recorder = new Tone.Recorder();
-      // const pitchInputValue: number = parseInt(pitchInput.value);
-      // pitchShift.pitch = pitchInputValue;
-
       pitchShift = new Tone.PitchShift();
 
       const pitchInputValue: number = parseFloat(pitchInput.value);
-      console.log(pitchInputValue);
-      if (!isNaN(pitchInputValue)) {
-        pitchShift.pitch = pitchInputValue;
-      } else {
-        console.error('Invalid pitch value: ', pitchInputValue);
-      }
-      // console.log(pitchInputValue);
+      pitchShift.pitch = pitchInputValue;
     })
     .catch((e) => console.error('Error:', e));
 });
