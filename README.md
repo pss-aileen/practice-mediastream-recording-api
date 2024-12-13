@@ -2,6 +2,8 @@
 
 ![](./public/github-social-preview.png)
 
+[The English version is provided below.](#overview)
+
 ## 概要
 
 このプロジェクトは、Web ブラウザを使って音声を録音し、ピッチを調整して保存できるアプリケーションです。Tone.js ライブラリを利用して、音声処理を簡単に実現しました。
